@@ -20,6 +20,7 @@ public class Register {
     //Every minute elapsed, the cashier will check out item
     public void timePass() 
     {
+    	
         if (this.customerQueue.size() > 0)
         {
             Customer customer = this.customerQueue.peek();

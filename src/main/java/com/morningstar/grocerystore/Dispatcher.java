@@ -16,13 +16,15 @@ public class Dispatcher {
 	
 	final static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 	private int time = 0;
-
+	
+	//all registers
 	private List<Register> registerList = null;
 
 	private void init(DataFileReader reader) throws IOException {
 		this.registerList = reader.getRegisters();
 	}
 
+	//make sure all clients has cleared
 	private boolean isRegisterCleared() {
 
 		for (Register re : this.registerList) {
@@ -44,13 +46,17 @@ public class Dispatcher {
 		}
 	}
 
-	// every minutes, each register will try to check out something
+	//every minutes, each register will try to check out something
 	private void checkoutQueues() {
 		for (Register r : this.registerList) {
 			r.timePass();
 		}
 	}
 
+	/**
+	 * Get whole client queue from outside, it may from file,
+	 * network stream or any other possible resource.
+	 * */
 	public int run(Reader input) {
 		DataFileReader reader = null;
 		try {

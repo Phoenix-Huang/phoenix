@@ -17,11 +17,12 @@ import org.slf4j.LoggerFactory;
 import com.morningstar.grocerystore.cashiers.CashierRegular;
 import com.morningstar.grocerystore.cashiers.CashierTraining;
 import com.morningstar.grocerystore.customers.Customer;
+import com.morningstar.grocerystore.customers.CustomerFactory;
 import com.morningstar.grocerystore.registers.Register;
 
-/**Try to use AutoCloseable here, but JDK6 doesn't support it
- * I hope it can be a stream style input, that we can treat them
- * as network input in future
+/**
+ * Try to use "AutoCloseable" here, but JDK6 doesn't support it I hope it can be
+ * a stream style input, that we can treat them as network input in future
  * */
 public class DataFileReader implements Closeable {
 	final static Logger logger = LoggerFactory.getLogger(DataFileReader.class);
@@ -31,6 +32,7 @@ public class DataFileReader implements Closeable {
 		this.reader = new BufferedReader(input);
 	}
 
+	// when A and B came in same time, we need to make them in right logic
 	public class CustomerCompare implements Comparator<Customer> {
 
 		public int compare(Customer a, Customer b) {
@@ -51,28 +53,25 @@ public class DataFileReader implements Closeable {
 		}
 	}
 
+	// get next customer and remove him/her from queue
 	private Customer pollNextCustomer() throws Exception {
 
-		if(this.customerCache!=null){
-			
+		if (this.customerCache != null) {
+
 			Customer customer = this.customerCache;
 			this.customerCache = null;
 			return customer;
-			
 		}
-		
-		
+
 		String line = this.reader.readLine();
 		if (line != null) {
 
 			String[] items = line.split(" +");
 
 			if (3 == items.length) {
-				Class<?> customer = Class
-						.forName("com.morningstar.grocerystore.customers.Customer"
-								+ items[0].toUpperCase().trim());
 
-				Customer c = (Customer) customer.newInstance();
+				Customer c = CustomerFactory.getCustomer(items[0].toUpperCase()
+						.trim());
 				c.setArriveTime(Integer.parseInt(items[1].trim()));
 				c.setItemCount(new BigDecimal(items[2].trim()));
 
@@ -86,6 +85,7 @@ public class DataFileReader implements Closeable {
 
 	private Customer customerCache = null;
 
+	// Check from cache first, then try input stream
 	public Customer peekNextCustomer() throws Exception {
 
 		if (this.customerCache == null) {
@@ -94,7 +94,9 @@ public class DataFileReader implements Closeable {
 		}
 		return customerCache;
 	}
-	//Arrange Cashiers to Register, and the cashier in training should always in the last register.
+
+	// Arrange Cashiers to Register, and the cashier in training should always
+	// in the last register.
 	public List<Register> getRegisters() throws IOException {
 
 		if (this.reader.ready()) {
@@ -117,6 +119,7 @@ public class DataFileReader implements Closeable {
 		return null;
 	}
 
+	// get all customers comes in same time, then make them in one queue
 	public Queue<Customer> getCustomers(int time) {
 		Queue<Customer> customers = new PriorityQueue<Customer>(20,
 				new CustomerCompare());
@@ -132,9 +135,9 @@ public class DataFileReader implements Closeable {
 			}
 
 		} catch (IOException ioex) {
-			
+
 			logger.error(ioex.getMessage(), ioex);
-			
+
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
