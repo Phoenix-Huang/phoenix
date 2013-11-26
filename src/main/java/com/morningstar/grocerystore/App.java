@@ -14,7 +14,7 @@ public class App {
 	public static void main(String[] args) {
 
 		if (args == null || args.length != 1) {
-						
+
 			logger.info("Please input data file name.");
 			return;
 		}
@@ -25,13 +25,12 @@ public class App {
 			input = new InputStreamReader(new FileInputStream(args[0]));
 			Dispatcher dispatcher = new Dispatcher();
 			int time = dispatcher.run(input);
-
-			System.out.println("Finished at: t=" + time + "minutes");
+			logger.info("Finished at: t= {} minutes", time);			
 
 		} catch (Exception ex) {
-			
+
 			logger.error(ex.getMessage(), ex);
-			
+
 		} finally {
 			try {
 				if (input != null) {
@@ -39,7 +38,6 @@ public class App {
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
-				e.printStackTrace();
 			}
 		}
 	}

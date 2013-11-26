@@ -6,11 +6,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.morningstar.grocerystore.customers.Customer;
 import com.morningstar.grocerystore.registers.Register;
 
 public class Dispatcher {
-
+	
+	final static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 	private int time = 0;
 
 	private List<Register> registerList = null;
@@ -60,14 +64,14 @@ public class Dispatcher {
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex.getMessage(), ex);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
 					
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 				}
 			}
 		}

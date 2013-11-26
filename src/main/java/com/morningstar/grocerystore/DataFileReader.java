@@ -11,14 +11,20 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.morningstar.grocerystore.cashiers.CashierRegular;
 import com.morningstar.grocerystore.cashiers.CashierTraining;
 import com.morningstar.grocerystore.customers.Customer;
 import com.morningstar.grocerystore.registers.Register;
 
-//Try to use AutoCloseable here, but JDK6 doesn't support it
+/**Try to use AutoCloseable here, but JDK6 doesn't support it
+ * I hope it can be a stream style input, that we can treat them
+ * as network input in future
+ * */
 public class DataFileReader implements Closeable {
-
+	final static Logger logger = LoggerFactory.getLogger(DataFileReader.class);
 	private BufferedReader reader = null;
 
 	public DataFileReader(Reader input) {
@@ -88,7 +94,7 @@ public class DataFileReader implements Closeable {
 		}
 		return customerCache;
 	}
-
+	//Arrange Cashiers to Register, and the cashier in training should always in the last register.
 	public List<Register> getRegisters() throws IOException {
 
 		if (this.reader.ready()) {
@@ -126,10 +132,11 @@ public class DataFileReader implements Closeable {
 			}
 
 		} catch (IOException ioex) {
-			System.err.println(ioex.getMessage());
-			ioex.printStackTrace();
+			
+			logger.error(ioex.getMessage(), ioex);
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 		return customers;
 	}

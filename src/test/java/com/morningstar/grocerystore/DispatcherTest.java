@@ -21,7 +21,7 @@ import com.morningstar.grocerystore.util.KeyValuePair;
 public class DispatcherTest {
 
 	
-
+	final static Logger logger = LoggerFactory.getLogger(DispatcherTest.class);
 	private final static String NEW_LINE = System.getProperties().getProperty(
 			"line.separator");
 	private List<KeyValuePair<Integer, String>> data = null;
@@ -66,12 +66,12 @@ public class DispatcherTest {
 				
 				KeyValuePair<Integer, String> item = new KeyValuePair<Integer, String>(
 						time, value);
-				this.data.add(item);
+				this.data.add(item);				
 
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error(ex.getMessage(), ex);
 		} finally {
 			try {
 				if (input != null) {
@@ -79,7 +79,7 @@ public class DispatcherTest {
 				}
 			} catch (IOException e) {
 				
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 
@@ -88,8 +88,7 @@ public class DispatcherTest {
 	
 	@Test
 	public void testRun() {
-		Logger logger = LoggerFactory.getLogger(this.getClass());
-		logger.info("Hello World");
+		
 		for (KeyValuePair<Integer, String> item : this.data) {
 			Dispatcher dis = new Dispatcher();
 			int time = dis.run(new StringReader(item.getValue()));			
