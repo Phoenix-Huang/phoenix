@@ -26,7 +26,7 @@ public class App {
 			Dispatcher dispatcher = new Dispatcher();
 			int time = dispatcher.run(input);
 			System.out.println(String
-					.format("Finished at: t= {0} minutes", time));
+					.format("Finished at: t= %s minutes", time));
 
 		} catch (Exception ex) {
 
