@@ -25,7 +25,8 @@ public class App {
 			input = new InputStreamReader(new FileInputStream(args[0]));
 			Dispatcher dispatcher = new Dispatcher();
 			int time = dispatcher.run(input);
-			logger.info("Finished at: t= {} minutes", time);			
+			System.out.println(String
+					.format("Finished at: t= {} minutes", time));
 
 		} catch (Exception ex) {
 
