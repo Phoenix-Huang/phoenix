@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +18,10 @@ import com.morningstar.grocerystore.DataFileReader;
 import com.morningstar.grocerystore.customers.Customer;
 
 public class RegisterTest {
-	
-	
+
 	private Register register = null;
 	private DataFileReader data = null;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		URL path = getClass().getResource("/test.txt");
@@ -35,26 +35,39 @@ public class RegisterTest {
 			Queue<Customer> c = this.data.getCustomers(i);
 			list.addAll(c);
 		}
-		
+
 		this.register = registers.get(0);
-		this.register.getCustomerQueue().addAll(list);	
-		
+		this.register.getCustomerQueue().addAll(list);
+
 	}
 
 	@After
-	public void tearDown() throws Exception {		
-		
-		if(data!=null){
+	public void tearDown() throws Exception {
+
+		if (data != null) {
 			data.close();
 		}
-		
+
 	}
 
-	
 	@Test
 	public void testTimePass() {
-		fail("Not yet implemented");
+
+		this.register.timePass();
+		this.register.timePass();
+		this.register.timePass();
+		this.register.timePass();
+		BigDecimal itemCount = this.register.getCustomerQueue().peek()
+				.getItemCount();
+		assertTrue(itemCount.compareTo(BigDecimal.valueOf(1)) == 0);
+		this.register.timePass();
+		itemCount = this.register.getCustomerQueue().peek()
+				.getItemCount();
+		assertTrue(itemCount.compareTo(BigDecimal.valueOf(1)) == 0);
+		this.register.timePass();
+		itemCount = this.register.getCustomerQueue().peek()
+				.getItemCount();
+		assertTrue(itemCount.compareTo(BigDecimal.valueOf(5)) == 0);
 	}
 
-	
 }

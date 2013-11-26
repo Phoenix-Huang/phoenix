@@ -13,6 +13,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.morningstar.grocerystore.util.KeyValuePair;
 
@@ -68,7 +70,7 @@ public class DispatcherTest {
 
 			}
 
-		} catch (Throwable ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
 			try {
@@ -86,7 +88,8 @@ public class DispatcherTest {
 	
 	@Test
 	public void testRun() {
-
+		Logger logger = LoggerFactory.getLogger(this.getClass());
+		logger.info("Hello World");
 		for (KeyValuePair<Integer, String> item : this.data) {
 			Dispatcher dis = new Dispatcher();
 			int time = dis.run(new StringReader(item.getValue()));			

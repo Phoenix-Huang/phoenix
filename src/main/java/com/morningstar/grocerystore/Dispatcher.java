@@ -59,7 +59,7 @@ public class Dispatcher {
 				this.time++;				
 			}
 
-		} catch (Throwable ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
 			if (reader != null) {

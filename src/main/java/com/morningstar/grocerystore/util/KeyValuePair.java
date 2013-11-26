@@ -1,5 +1,14 @@
 package com.morningstar.grocerystore.util;
 
+
+
+/**
+ * @author phuang2
+ * A sample data structure to store pairs
+ * Then we can put it to list and the keys are not unique 
+ * 
+ */
+ 
 public class KeyValuePair<K, V> {
 	private K key;
 	private V value;

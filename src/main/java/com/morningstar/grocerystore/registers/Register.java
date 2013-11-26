@@ -26,7 +26,7 @@ public class Register {
             this.cashier.checkOut(customer);
             if (customer.getItemCount().compareTo(BigDecimal.valueOf(0))==0) 
             {
-                this.customerQueue.poll();               
+                this.customerQueue.poll();
             }
         }
     }

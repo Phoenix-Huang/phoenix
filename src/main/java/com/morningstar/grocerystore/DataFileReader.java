@@ -128,7 +128,7 @@ public class DataFileReader implements Closeable {
 		} catch (IOException ioex) {
 			System.err.println(ioex.getMessage());
 			ioex.printStackTrace();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return customers;
